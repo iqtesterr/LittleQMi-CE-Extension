@@ -1,4 +1,0 @@
-name: LittleQMi-CE-Extension
-version: '1.0-SNAPSHOT'
-main: com.chiiblock.plugin.ce.extension.CEExtension
-api-version: '1.21'

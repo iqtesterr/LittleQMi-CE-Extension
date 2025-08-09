@@ -1,5 +1,6 @@
 # Require player to hit multiple times during certain interval to break the furniture
 multi-hit:
+  enable: true
   # Global defaults for all furniture (comment out to disable global defaults)
   global:
     hits: 2

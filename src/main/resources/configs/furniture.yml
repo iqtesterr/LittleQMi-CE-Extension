@@ -1,17 +1,18 @@
-# Require player to hit multiple times during certain interval to break the furniture
+# Require player to hit multiple times within a certain interval to break the furniture.
 multi-hit:
   enable: true
   # Global defaults for all furniture (comment out to disable global defaults)
   global:
     hits: 2
     # Maximum gap between consecutive hits (in ticks). 1 tick = 0.05s.
-    # [5,10] means different interval between different hit
-    interval: 10
+    # [5,10] means different intervals between hits.
+    # e.g. 5t for first -> second hit, 10t for second -> third hit.
+    intervals: 10
   # Per-group rules that override the global defaults
   override:
     # Group
     fast:
       hits: 3
-      interval: 5
+      intervals: 5
       list:
         - default:bench

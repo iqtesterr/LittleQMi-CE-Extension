@@ -13,6 +13,6 @@ multi-hit:
     # Group
     fast:
       hits: 3
-      intervals: 5
+      intervals: [10,5]
       list:
         - default:bench

@@ -42,7 +42,6 @@ public final class CEExtension extends JavaPlugin implements Manageable {
                                 ctx.getSource().getSender().sendMessage("CE Extension reloaded");
                                 return Command.SINGLE_SUCCESS;
                             }).build())
-                    // Todo
                     .requires(src -> src.getSender().hasPermission("littleqmi-ce-extension.reload"))
                     .build());
         });

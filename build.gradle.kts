@@ -5,6 +5,8 @@ plugins {
     id("de.eldoria.plugin-yml.paper") version "0.7.1"
 }
 
+version = providers.gradleProperty("project_version").get()
+
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://repo.momirealms.net/releases/")

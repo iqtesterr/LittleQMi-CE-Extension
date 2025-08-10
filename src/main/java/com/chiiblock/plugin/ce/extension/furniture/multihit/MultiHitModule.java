@@ -54,7 +54,7 @@ public class MultiHitModule implements Manageable {
                         .map(o -> Integer.parseInt(o.toString()))
                         .toList();
             } else {
-                globalIntervalsList = List.of(config.getInt("multi-hit.global.interval", 10));
+                globalIntervalsList = List.of(config.getInt("multi-hit.global.intervals", 10));
             }
             globalHitRule = HitRule.builder().hits(globalHits).intervals(globalIntervalsList).build();
         }

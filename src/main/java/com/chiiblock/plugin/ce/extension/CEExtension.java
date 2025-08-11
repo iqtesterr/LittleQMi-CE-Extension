@@ -4,10 +4,9 @@ import com.chiiblock.plugin.ce.extension.furniture.FurnitureManager;
 import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import net.momirealms.craftengine.core.plugin.Manageable;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class CEExtension extends JavaPlugin implements Manageable {
+public final class CEExtension extends JavaPlugin {
     private static CEExtension instance;
 
     private FurnitureManager furnitureManager;
@@ -27,7 +26,6 @@ public final class CEExtension extends JavaPlugin implements Manageable {
         this.getLogger().info("CE Extension Disabled");
     }
 
-    @Override
     public void reload() {
         furnitureManager.reload();
     }

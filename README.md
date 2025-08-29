@@ -5,6 +5,8 @@
 ❤️ Express the potential of CraftEngine with me.
 ## Feature
 - Multi-Hit Furniture Breaking
+- Convert ItemsAdder/Oraxen/Nexo Block & Item In World (In Future)
+- Block Like Furniture Breaking
 
 ## Other
 If you want any feature, feel free to discuss with me on Discord.

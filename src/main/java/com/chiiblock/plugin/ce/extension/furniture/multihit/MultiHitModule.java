@@ -17,6 +17,7 @@ public class MultiHitModule implements Manageable {
     private final FurnitureManager manager;
     private HitTracker hitTracker;
 
+    private boolean creative;
     private boolean global;
     private HitRule globalHitRule;
 
@@ -43,6 +44,8 @@ public class MultiHitModule implements Manageable {
 
     private void loadConfig() {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(manager.file());
+        // Creative
+        creative = config.getBoolean("multi-hit.creative", false);
         // Global
         global = config.contains("multi-hit.global");
         if (global) {
@@ -80,6 +83,10 @@ public class MultiHitModule implements Manageable {
                 rulesByIds.put(id, rule);
             }
         }
+    }
+
+    public boolean creative() {
+        return creative;
     }
 
     public boolean global() {

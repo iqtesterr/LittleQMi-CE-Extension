@@ -2,6 +2,7 @@ package com.chiiblock.plugin.ce.extension.furniture.multihit;
 
 import net.momirealms.craftengine.bukkit.api.event.FurnitureAttemptBreakEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -21,10 +22,14 @@ public class HitTracker implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onFurnitureBreak(FurnitureAttemptBreakEvent event) {
+        Player player = event.getPlayer();
+        if (module.creative()) {
+            if (player.getGameMode() == GameMode.CREATIVE) return;
+        }
+
         int tick = Bukkit.getCurrentTick();
         String id = event.furniture().id().asString();
         int furnitureId = event.furniture().baseEntityId();
-        Player player = event.getPlayer();
         HitData hitData = tracks.get(player.getUniqueId());
 
         // First Hit

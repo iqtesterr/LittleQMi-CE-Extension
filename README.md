@@ -13,3 +13,7 @@ Wiki: (plan)
 ## Other
 If you want any feature, feel free to discuss with me on Discord.
 Open an issue, or anything.
+
+[XiaoMoMi Discord Server](https://discord.gg/xiaomomi)
+
+Note: Once you join, you can find my post at [here](https://discord.com/channels/1184188446458257479/1404139458516746371), discuss in post only.

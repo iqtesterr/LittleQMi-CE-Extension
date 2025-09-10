@@ -9,6 +9,7 @@ Wiki: (plan)
 - Multi-Hit Furniture Breaking
 - Convert ItemsAdder/Oraxen/Nexo Block & Item In World (future)
 - Block Like Furniture Breaking (plan)
+- CountDown Block Behavior (dev)
 
 ## Other
 If you want any feature, feel free to discuss with me on Discord.

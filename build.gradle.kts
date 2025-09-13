@@ -15,8 +15,11 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
-    compileOnly("net.momirealms:craft-engine-core:${rootProject.properties["craftengine_version"]}")
-    compileOnly("net.momirealms:craft-engine-bukkit:${rootProject.properties["craftengine_version"]}")
+    compileOnly(files("${rootProject.rootDir}/libs/craft-engine-core-${rootProject.properties["craftengine_version"]}.jar"))
+    compileOnly(files("${rootProject.rootDir}/libs/craft-engine-bukkit-${rootProject.properties["craftengine_version"]}.jar"))
+    // when block entity move into main branch I will put it back
+    //compileOnly("net.momirealms:craft-engine-core:${rootProject.properties["craftengine_version"]}")
+    //compileOnly("net.momirealms:craft-engine-bukkit:${rootProject.properties["craftengine_version"]}")
     compileOnly("net.momirealms:craft-engine-nms-helper:${rootProject.properties["nms_helper_version"]}")
 }
 

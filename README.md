@@ -4,6 +4,9 @@
 
 ❤️ Express the potential of CraftEngine with me.
 
+By the way, I don't think this support Folia? 
+I think I do need to do some extra work to support it.
+
 Wiki: (plan)
 ## Feature
 - Multi-Hit Furniture Breaking

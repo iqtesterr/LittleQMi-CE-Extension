@@ -13,18 +13,23 @@ public class CountdownBlockEntity extends BlockEntity {
     public static final BlockEntityType<CountdownBlockEntity> COUNTDOWN = BukkitBlockEntityTypes.register(Key.of("xiaoqmi:countdown"), CountdownBlockEntity::new);
     private final CountdownBlockBehavior behavior;
 
-    private CountdownBlockEntity(BlockPos pos, ImmutableBlockState blockState) {
+    public CountdownBlockEntity(BlockPos pos, ImmutableBlockState blockState) {
         super(COUNTDOWN, pos, blockState);
         this.behavior = super.blockState.behavior().getAs(CountdownBlockBehavior.class).orElseThrow();
     }
 
     @Override
     public void loadCustomData(CompoundTag tag) {
-        super.loadCustomData(tag);
+
     }
 
     @Override
     protected void saveCustomData(CompoundTag tag) {
-        super.saveCustomData(tag);
+
+    }
+
+    @Override
+    public void preRemove() {
+
     }
 }

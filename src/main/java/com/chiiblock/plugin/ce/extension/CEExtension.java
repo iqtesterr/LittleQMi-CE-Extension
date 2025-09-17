@@ -1,5 +1,6 @@
 package com.chiiblock.plugin.ce.extension;
 
+import com.chiiblock.plugin.ce.extension.block.behavior.BlockManager;
 import com.chiiblock.plugin.ce.extension.furniture.FurnitureManager;
 import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;
@@ -9,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class CEExtension extends JavaPlugin {
     private static CEExtension instance;
 
+    private BlockManager blockManager;
     private FurnitureManager furnitureManager;
 
     @Override
@@ -22,12 +24,14 @@ public final class CEExtension extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        this.blockManager.disable();
         this.furnitureManager.disable();
         this.getLogger().info("CE Extension Disabled");
     }
 
     public void reload() {
-        furnitureManager.reload();
+        this.blockManager.reload();
+        this.furnitureManager.reload();
     }
 
     @SuppressWarnings("UnstableApiUsage")
@@ -49,7 +53,11 @@ public final class CEExtension extends JavaPlugin {
         return instance;
     }
 
-    public FurnitureManager getFurnitureManager() {
+    public FurnitureManager furnitureManager() {
         return furnitureManager;
+    }
+
+    public BlockManager blockManager() {
+        return blockManager;
     }
 }

@@ -31,15 +31,15 @@ public class MultiHitModule implements Manageable {
     public void load() {
         if (!manager.multiHitModule()) return;
         loadConfig();
-        hitTracker = new HitTracker(this);
+        this.hitTracker = new HitTracker(this);
         Bukkit.getPluginManager().registerEvents(hitTracker, CEExtension.instance());
     }
 
     @Override
     public void unload() {
         HandlerList.unregisterAll(hitTracker);
-        hitTracker = null;
-        rulesByIds.clear();
+        this.hitTracker = null;
+        this.rulesByIds.clear();
     }
 
     private void loadConfig() {

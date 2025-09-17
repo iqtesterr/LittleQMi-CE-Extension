@@ -12,8 +12,15 @@ import net.momirealms.craftengine.core.world.CEWorld;
 
 public class CountdownBlockBehavior extends BukkitBlockBehavior implements EntityBlockBehavior {
 
-    public CountdownBlockBehavior(CustomBlock customBlock) {
+    private final CountdownType countdownType;
+
+    public enum CountdownType {
+        ABSOLUTE, LOADED_ONLY
+    }
+
+    public CountdownBlockBehavior(CustomBlock customBlock, CountdownType countdownType) {
         super(customBlock);
+        this.countdownType = countdownType;
     }
 
     @Override
@@ -29,5 +36,9 @@ public class CountdownBlockBehavior extends BukkitBlockBehavior implements Entit
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> createBlockEntityTicker(CEWorld level, ImmutableBlockState state, BlockEntityType<T> blockEntityType) {
         return EntityBlockBehavior.super.createBlockEntityTicker(level, state, blockEntityType);
+    }
+
+    public CountdownType getCountdownType() {
+        return countdownType;
     }
 }

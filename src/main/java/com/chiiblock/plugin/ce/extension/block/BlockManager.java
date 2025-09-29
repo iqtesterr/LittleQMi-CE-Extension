@@ -1,7 +1,9 @@
-package com.chiiblock.plugin.ce.extension.block.behavior;
+package com.chiiblock.plugin.ce.extension.block;
 
 import com.chiiblock.plugin.ce.extension.CEExtension;
+import com.chiiblock.plugin.ce.extension.block.behavior.BlockBehaviors;
 import com.chiiblock.plugin.ce.extension.block.countdown.CountdownModule;
+import com.chiiblock.plugin.ce.extension.block.entity.BlockEntityTypes;
 import net.momirealms.craftengine.core.plugin.Manageable;
 
 public class BlockManager implements Manageable {
@@ -15,7 +17,7 @@ public class BlockManager implements Manageable {
 
     @Override
     public void load() {
-
+        BlockBehaviors.init();
     }
 
     @Override

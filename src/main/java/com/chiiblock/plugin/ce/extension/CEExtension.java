@@ -1,6 +1,6 @@
 package com.chiiblock.plugin.ce.extension;
 
-import com.chiiblock.plugin.ce.extension.block.behavior.BlockManager;
+import com.chiiblock.plugin.ce.extension.block.BlockManager;
 import com.chiiblock.plugin.ce.extension.furniture.FurnitureManager;
 import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;

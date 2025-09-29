@@ -4,15 +4,16 @@
 
 ❤️ Express the potential of CraftEngine with me.
 
-By the way, I don't think this support Folia? 
-I think I do need to do some extra work to support it.
+Wiki: PLAN
+## Mention
 
-Wiki: (plan)
+This extension do not support Folia currently. \
+It require dealing those scheduling stuff, which I believe isn't that hard but I don't find time to do so.
+
 ## Feature
 - Multi-Hit Furniture Breaking
-- Convert ItemsAdder/Oraxen/Nexo Block & Item In World (future)
+- CountDown Block Behavior
 - Block Like Furniture Breaking (plan)
-- CountDown Block Behavior (dev)
 
 ## Other
 If you want any feature, feel free to discuss with me on Discord.
@@ -21,3 +22,6 @@ Open an issue, or anything.
 [XiaoMoMi Discord Server](https://discord.gg/xiaomomi)
 
 Note: Once you join, you can find my post at [here](https://discord.com/channels/1184188446458257479/1404139458516746371), discuss in post only.
+
+# WARNING
+### I’m really sorry, but due to personal needs I have to push a bunch of highly customized, poorly designed, and unoptimized features. Once I have more time away from school, I’ll refactor everything and turn these features into more generalized ones.

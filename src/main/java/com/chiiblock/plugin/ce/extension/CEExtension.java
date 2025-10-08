@@ -16,6 +16,7 @@ public final class CEExtension extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        this.blockManager = new BlockManager(this);
         this.furnitureManager = new FurnitureManager(this);
         this.registerCommands();
         this.reload();

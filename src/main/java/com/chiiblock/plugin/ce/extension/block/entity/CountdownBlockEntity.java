@@ -3,7 +3,9 @@ package com.chiiblock.plugin.ce.extension.block.entity;
 import com.chiiblock.plugin.ce.extension.block.behavior.CountdownBlockBehavior;
 import net.momirealms.craftengine.core.block.ImmutableBlockState;
 import net.momirealms.craftengine.core.block.entity.BlockEntity;
+import net.momirealms.craftengine.core.block.entity.tick.BlockEntityTicker;
 import net.momirealms.craftengine.core.world.BlockPos;
+import net.momirealms.craftengine.core.world.CEWorld;
 import net.momirealms.craftengine.libraries.nbt.CompoundTag;
 
 import java.util.Optional;
@@ -14,7 +16,7 @@ import java.util.Optional;
  * When it being reconstruct, it will follow the new countdown, and maintain how long it elapsed.
  * If the new countdown is shorter than it elapsed, then the correspond timing action will be trigger.
  */
-public class CountdownBlockEntity extends BlockEntity {
+public class CountdownBlockEntity extends BlockEntity implements BlockEntityTicker {
     private final CountdownBlockBehavior behavior;
 
     private boolean active;
@@ -28,7 +30,8 @@ public class CountdownBlockEntity extends BlockEntity {
         this.behavior = super.blockState.behavior().getAs(CountdownBlockBehavior.class).orElseThrow();
     }
 
-    public void execute(long currentTick) {
+    @Override
+    public void tick(CEWorld world, BlockPos pos, ImmutableBlockState state, BlockEntity blockEntity) {
 
     }
 

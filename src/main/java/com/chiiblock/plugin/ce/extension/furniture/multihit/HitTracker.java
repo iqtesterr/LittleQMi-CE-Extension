@@ -21,7 +21,7 @@ public class HitTracker implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onFurnitureBreak(FurnitureAttemptBreakEvent event) {
+    public void onFurnitureAttemptToBreak(FurnitureAttemptBreakEvent event) {
         Player player = event.getPlayer();
         if (module.creative()) {
             if (player.getGameMode() == GameMode.CREATIVE) return;

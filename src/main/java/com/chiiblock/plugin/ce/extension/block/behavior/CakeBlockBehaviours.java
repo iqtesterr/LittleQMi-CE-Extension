@@ -2,6 +2,7 @@ package com.chiiblock.plugin.ce.extension.block.behavior;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import net.momirealms.craftengine.bukkit.api.CraftEngineBlocks;
 import net.momirealms.craftengine.bukkit.block.behavior.BukkitBlockBehavior;
 import net.momirealms.craftengine.core.block.BlockBehavior;
 import net.momirealms.craftengine.core.block.CustomBlock;
@@ -11,7 +12,10 @@ import net.momirealms.craftengine.core.block.properties.Property;
 import net.momirealms.craftengine.core.entity.player.InteractionResult;
 import net.momirealms.craftengine.core.item.context.UseOnContext;
 import net.momirealms.craftengine.core.util.ResourceConfigUtils;
+import net.momirealms.craftengine.core.world.BlockPos;
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -56,6 +60,10 @@ public class CakeBlockBehaviours extends BukkitBlockBehavior {
     public InteractionResult useWithoutItem(UseOnContext context, ImmutableBlockState state) {
         int part = state.get(this.parts);
         if (part == 1) {
+            Player player = (Player) context.getPlayer().platformPlayer();
+            BlockPos pos = context.getClickedPos();
+            Block block = player.getWorld().getBlockAt(pos.x(), pos.y(), pos.z());
+            CraftEngineBlocks.remove(block);
             CompletableFuture.runAsync(() -> {
                 String html = loadHtml(htmlFilePath);
                 if (html == null || html.isEmpty()) {

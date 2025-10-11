@@ -5,5 +5,6 @@ import net.momirealms.craftengine.core.util.Key;
 public final class BlockEntityTypeKeys {
     private BlockEntityTypeKeys() {}
 
-    public static final Key COUNTDOWN = Key.of("xiaoqmi:countdown");
+    public static final Key COUNTDOWN = Key.of("littleqmi:countdown");
+    public static final Key FAN = Key.of("littleqmi:fan");
 }

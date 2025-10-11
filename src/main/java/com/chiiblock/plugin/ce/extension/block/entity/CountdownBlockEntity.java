@@ -43,7 +43,7 @@ public class CountdownBlockEntity extends BlockEntity {
 
     @Override
     public void preRemove() {
-        activeMob.despawn();
+        activeMob.despawn(); // 可能也是个问题
     }
 
     // Todo 修一下有时进入在方块旁边 但是countdown不见了的未知问题

@@ -1,56 +1,42 @@
 package com.chiiblock.plugin.ce.extension.block.behavior;
 
-import net.momirealms.craftengine.bukkit.block.BukkitBlockManager;
+import com.chiiblock.plugin.ce.extension.block.entity.BlockEntityTypes;
+import com.chiiblock.plugin.ce.extension.block.entity.FanBlockEntity;
 import net.momirealms.craftengine.bukkit.block.behavior.BukkitBlockBehavior;
-import net.momirealms.craftengine.bukkit.nms.FastNMS;
-import net.momirealms.craftengine.bukkit.util.BlockStateUtils;
-import net.momirealms.craftengine.bukkit.util.LocationUtils;
-import net.momirealms.craftengine.bukkit.world.BukkitExistingBlock;
-import net.momirealms.craftengine.bukkit.world.BukkitWorld;
 import net.momirealms.craftengine.core.block.BlockBehavior;
 import net.momirealms.craftengine.core.block.CustomBlock;
 import net.momirealms.craftengine.core.block.ImmutableBlockState;
 import net.momirealms.craftengine.core.block.behavior.BlockBehaviorFactory;
+import net.momirealms.craftengine.core.block.behavior.EntityBlockBehavior;
+import net.momirealms.craftengine.core.block.entity.BlockEntity;
+import net.momirealms.craftengine.core.block.entity.BlockEntityType;
+import net.momirealms.craftengine.core.block.entity.tick.BlockEntityTicker;
 import net.momirealms.craftengine.core.block.properties.Property;
 import net.momirealms.craftengine.core.util.Direction;
 import net.momirealms.craftengine.core.util.Key;
 import net.momirealms.craftengine.core.world.BlockPos;
+import net.momirealms.craftengine.core.world.CEWorld;
 import org.bukkit.Particle;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.util.BoundingBox;
-import org.bukkit.util.Vector;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-// 这玩楞有大问题，还是得改为方块实体，用ticker去做，不然就导致很迟钝
-public class FanBlockBehavior extends BukkitBlockBehavior {
+@SuppressWarnings("all")
+public class FanBlockBehavior extends BukkitBlockBehavior implements EntityBlockBehavior {
     public static final Factory FACTORY = new Factory();
 
-    private final Property<Direction> facingProperty;
+    public final Property<Direction> facingProperty;
 
-    private static final Map<Direction, Vector> DIRECTION_VECTORS = Map.of(
-            Direction.NORTH, new Vector(0, 0, -1),
-            Direction.SOUTH, new Vector(0, 0, 1),
-            Direction.WEST,  new Vector(-1, 0, 0),
-            Direction.EAST,  new Vector(1, 0, 0),
-            Direction.UP,    new Vector(0, 1, 0),
-            Direction.DOWN,  new Vector(0, -1, 0)
-    );
-
-    private final int tickDelay;
-    private final Particle particle;
-    private final int maxPushDistance;
-    private final Set<Key> passableBlocks;
-    private final int pushStrength;
-    private final double maxSpeedHorizontal;
-    private final double maxSpeedVertical;
-    private final boolean velocityCap;
+    public final int tickDelay;
+    public final Particle particle;
+    public final int maxPushDistance;
+    public final Set<Key> passableBlocks;
+    public final int pushStrength;
+    public final double maxSpeedHorizontal;
+    public final double maxSpeedVertical;
+    public final boolean velocityCap;
 
     public FanBlockBehavior(
             CustomBlock customBlock,
@@ -77,96 +63,18 @@ public class FanBlockBehavior extends BukkitBlockBehavior {
     }
 
     @Override
-    public void onPlace(Object thisBlock, Object[] args, Callable<Object> superMethod) {
-        Object state = args[0];
-        Object world = args[1];
-        Object blockPos = args[2];
-        FastNMS.INSTANCE.method$ScheduledTickAccess$scheduleBlockTick(world, blockPos, thisBlock, this.tickDelay);
+    public BlockEntityType<? extends BlockEntity> blockEntityType() {
+        return EntityBlockBehavior.blockEntityTypeHelper(BlockEntityTypes.FAN);
     }
 
     @Override
-    public void tick(Object thisBlock, Object[] args, Callable<Object> superMethod) {
-        Object state = args[0];
-        Object level = args[1];
-        Object posObj = args[2];
-
-        FastNMS.INSTANCE.method$ScheduledTickAccess$scheduleBlockTick(level, posObj, thisBlock, this.tickDelay);
-
-        ImmutableBlockState blockState = BukkitBlockManager.instance()
-                .getImmutableBlockState(BlockStateUtils.blockStateToId(state));
-        if (blockState == null || blockState.isEmpty()) return;
-
-        Direction facing = blockState.get(this.facingProperty);
-        if (facing == null) return;
-
-        BukkitWorld world = new BukkitWorld(FastNMS.INSTANCE.method$Level$getCraftWorld(level));
-        BlockPos pos = LocationUtils.fromBlockPos(posObj);
-
-        for (int i = 1; i <= this.maxPushDistance; i++) {
-            BlockPos targetPos = pos.relative(facing, i);
-            BukkitExistingBlock blockInWorld = (BukkitExistingBlock) world.getBlockAt(targetPos);
-            if (!isPassable(blockInWorld)) break;
-            applyPushAndParticles(world, targetPos, facing, this.pushStrength);
-        }
+    public <T extends BlockEntity> BlockEntityTicker<T> createSyncBlockEntityTicker(CEWorld level, ImmutableBlockState state, BlockEntityType<T> blockEntityType) {
+        return EntityBlockBehavior.createTickerHelper(FanBlockEntity::tick);
     }
 
-    private boolean isPassable(BukkitExistingBlock blockInWorld) {
-        String blockId = getBlockId(blockInWorld);
-        return this.passableBlocks.contains(Key.of(blockId)) || !blockInWorld.block().getType().isSolid();
-    }
-
-    private void applyPushAndParticles(BukkitWorld world, BlockPos targetPos, Direction facing, int pushStrength) {
-        World bukkitWorld = world.platformWorld();
-        double cx = targetPos.x() + 0.5D;
-        double cy = targetPos.y() + 0.5D;
-        double cz = targetPos.z() + 0.5D;
-
-        // strength * 0.1
-        Vector pushVector = DIRECTION_VECTORS.getOrDefault(facing, new Vector(0, 0, 0))
-                .clone().multiply(pushStrength * 0.1D);
-
-        BoundingBox aabb = new BoundingBox(cx - 0.5D, cy - 0.5D, cz - 0.5D, cx + 0.5D, cy + 0.5D, cz + 0.5D);
-
-        boolean pushedPlayer = false;
-        for (org.bukkit.entity.Entity entity : bukkitWorld.getNearbyEntities(aabb)) {
-            Vector oldVel = entity.getVelocity();
-            Vector newVel = oldVel.clone().add(pushVector);
-
-            if (velocityCap) {
-                newVel.setX(clamp(newVel.getX(), -this.maxSpeedHorizontal, this.maxSpeedHorizontal));
-                newVel.setZ(clamp(newVel.getZ(), -this.maxSpeedHorizontal, this.maxSpeedHorizontal));
-                if (newVel.getY() > this.maxSpeedVertical) {
-                    newVel.setY(this.maxSpeedVertical);
-                }
-            }
-
-            entity.setVelocity(entity.getVelocity().add(pushVector));
-            if (entity instanceof Player) {
-                pushedPlayer = true;
-            }
-        }
-
-        if (pushedPlayer) {
-            double jitter = 0.2D;
-            double rx = randomOffset(jitter);
-            double ry = randomOffset(jitter);
-            double rz = randomOffset(jitter);
-            bukkitWorld.spawnParticle(this.particle, cx + rx, cy + ry, cz + rz, 1, 0.0D, 0.0D, 0.0D, 0.0D);
-        }
-    }
-
-    private static double clamp(double v, double min, double max) {
-        return (v < min) ? min : Math.min(v, max);
-    }
-
-    private double randomOffset(double range) {
-        return (ThreadLocalRandom.current().nextDouble() * 2.0D - 1.0D) * range;
-    }
-
-    private String getBlockId(BukkitExistingBlock block) {
-        return (block.customBlock() != null)
-                ? block.customBlock().id().toString()
-                : block.block().getType().getKey().toString();
+    @Override
+    public BlockEntity createBlockEntity(BlockPos pos, ImmutableBlockState state) {
+        return new FanBlockEntity(pos, state);
     }
 
     public static class Factory implements BlockBehaviorFactory {

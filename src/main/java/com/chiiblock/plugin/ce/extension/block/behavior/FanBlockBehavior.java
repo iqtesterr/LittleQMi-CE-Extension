@@ -28,6 +28,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
+// 这玩楞有大问题，还是得改为方块实体，用ticker去做，不然就导致很迟钝
 public class FanBlockBehavior extends BukkitBlockBehavior {
     public static final Factory FACTORY = new Factory();
 

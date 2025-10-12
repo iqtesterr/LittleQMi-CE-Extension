@@ -14,6 +14,7 @@ import net.momirealms.craftengine.libraries.nbt.CompoundTag;
 import org.bukkit.World;
 
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 import static com.chiiblock.plugin.ce.extension.block.behavior.DateCountdownBlockBehavior.TORONTO_ZONE;
 
@@ -26,6 +27,7 @@ import static com.chiiblock.plugin.ce.extension.block.behavior.DateCountdownBloc
 public class CountdownBlockEntity extends BlockEntity {
     private final DateCountdownBlockBehavior behavior;
     private ActiveMob activeMob;
+    private UUID uuid;
     private long lastEpochSecond = -1L;
     private boolean activeCountdown = false;
     private boolean finish = false;
@@ -36,22 +38,31 @@ public class CountdownBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void loadCustomData(CompoundTag tag) {}
+    public void loadCustomData(CompoundTag tag) {
+        uuid = tag.getUUID("entity");
+    }
 
     @Override
-    protected void saveCustomData(CompoundTag tag) {}
+    protected void saveCustomData(CompoundTag tag) {
+        if (uuid != null) {
+            tag.putUUID("entity", uuid);
+        }
+    }
 
     @Override
     public void preRemove() {
-        activeMob.despawn(); // 可能也是个问题
+        if(activeMob != null) activeMob.despawn();
     }
 
-    // Todo 修一下有时进入在方块旁边 但是countdown不见了的未知问题
     public static void tick(CEWorld ceWorld, BlockPos pos, ImmutableBlockState state, CountdownBlockEntity countdown) {
         MythicBukkit mythic = MythicBukkit.inst();
-        if (countdown.activeMob == null) {
+        if (countdown.uuid == null) {
             MythicMob mob = mythic.getMobManager().getMythicMob("countdown").orElseThrow();
             countdown.activeMob = mob.spawn(new AbstractLocation(BukkitAdapter.adapt((World) ceWorld.world().platformWorld()), pos.x() + 0.5, pos.y() + 1.5, pos.z() + 0.5), 0);
+            countdown.uuid = countdown.activeMob.getUniqueId();
+        } else if (countdown.activeMob == null) {
+            mythic.getMobManager().getActiveMob(countdown.uuid).ifPresent(oldMob -> countdown.activeMob = oldMob);
+            mythic.getAPIHelper().castSkill(countdown.activeMob.getEntity().getBukkitEntity(), "countdown_model");
         }
         if (countdown.finish) return;
 

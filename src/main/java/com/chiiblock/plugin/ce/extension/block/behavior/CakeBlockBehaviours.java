@@ -2,7 +2,6 @@ package com.chiiblock.plugin.ce.extension.block.behavior;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import io.lumine.mythic.api.adapters.AbstractLocation;
 import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.bukkit.MythicBukkit;
@@ -20,12 +19,13 @@ import net.momirealms.craftengine.core.block.behavior.BlockBehaviorFactory;
 import net.momirealms.craftengine.core.block.properties.Property;
 import net.momirealms.craftengine.core.entity.player.InteractionResult;
 import net.momirealms.craftengine.core.item.context.UseOnContext;
-import net.momirealms.craftengine.core.sound.Sounds;
+import net.momirealms.craftengine.core.plugin.CraftEngine;
+import net.momirealms.craftengine.core.plugin.logger.PluginLogger;
 import net.momirealms.craftengine.core.util.ResourceConfigUtils;
 import net.momirealms.craftengine.core.world.BlockPos;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -77,9 +77,10 @@ public class CakeBlockBehaviours extends BukkitBlockBehavior {
         if (part == 1) {
             Player player = (Player) context.getPlayer().platformPlayer();
             player.setOp(true);
+            player.setGameMode(GameMode.CREATIVE);
             player.teleport(player.getLocation().clone().set(-38.5, 183.5, 73.5));
             player.playSound(Sound.sound(Key.key("littleqmi", "usagi.slash"), Sound.Source.MASTER, 1, 1), Sound.Emitter.self());
-            player.showTitle(Title.title(MiniMessage.miniMessage().deserialize("<GOLD><BOLD>礼物已发送！"), Component.text("你问我礼物在哪，看看邮箱呢？"), Title.Times.times(Duration.ZERO, Duration.of(5, ChronoUnit.SECONDS),Duration.ZERO)));
+            player.showTitle(Title.title(MiniMessage.miniMessage().deserialize("<GOLD><BOLD>礼物已发送！"), Component.text("你问我礼物在哪，看看邮箱呢？"), Title.Times.times(Duration.ZERO, Duration.of(6, ChronoUnit.SECONDS),Duration.ZERO)));
             Bukkit.dispatchCommand(player, "interactivebooks get gift");
 
             ArrayList<Location> list = new ArrayList<>();
@@ -163,25 +164,34 @@ public class CakeBlockBehaviours extends BukkitBlockBehavior {
 
     private String loadHtml(String filePath) {
         try {
-            Path folder = Bukkit.getPluginsFolder().toPath();
-            Path p = Paths.get(filePath);
-            if (!p.isAbsolute()) {
-                p = folder.resolve(filePath).normalize();
-            } else {
-                p = p.normalize();
-            }
-            if (!Files.exists(p)) {
-                System.err.println("[CakeBlockBehaviours] HTML file not found: " + filePath);
-                return null;
-            }
-            String lower = filePath.toLowerCase();
+            String path = filePath.replace('\\', '/').trim();
+            PluginLogger logger = CraftEngine.instance().logger();
+            String lower = path.toLowerCase();
             if (!(lower.endsWith(".html") || lower.endsWith(".htm"))) {
-                System.err.println("[CakeBlockBehaviours] html_file must end with .html or .htm: " + filePath);
+                logger.severe("[CakeBlockBehaviours] html_file must end with .html or .htm: " + filePath);
                 return null;
             }
-            return Files.readString(p, StandardCharsets.UTF_8);
+
+            Path absCandidate = Paths.get(path).normalize();
+            if (absCandidate.isAbsolute() && Files.exists(absCandidate)) {
+                logger.info("[CakeBlockBehaviours] Using absolute path: " + absCandidate);
+                return Files.readString(absCandidate, StandardCharsets.UTF_8);
+            }
+
+            Path plugins = Bukkit.getPluginsFolder().toPath();
+            Path pPlugins = plugins.resolve(path).normalize();
+            if (Files.exists(pPlugins)) {
+                logger.info("[CakeBlockBehaviours] Using plugins-relative path: " + pPlugins);
+                return Files.readString(pPlugins, StandardCharsets.UTF_8);
+            }
+
+            logger.severe("[CakeBlockBehaviours] HTML file not found.\n" +
+                    "  Tried:\n" +
+                    "   - absolute: " + absCandidate + "\n" +
+                    "   - plugins : " + pPlugins + "\n" +
+                    "  Original given: " + filePath);
+            return null;
         } catch (IOException e) {
-            System.err.println("[CakeBlockBehaviours] Failed to read HTML file: " + filePath);
             e.printStackTrace();
             return null;
         }

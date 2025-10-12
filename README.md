@@ -14,7 +14,7 @@ It require dealing those scheduling stuff, which I believe isn't that hard but I
 Unstable - minor issues exist and still need to be fixed. \
 Refactor - fully functional but will be refactor later. \
 Customize - nearly unusable for other people, and will be redesign for generalize usecase. \
-Plan - it is a plan feature. \
+Plan - it is a plan feature. 
 - Multi-Hit Furniture Breaking
 - Fan Block Behavior (refactor)
 - DateCountDown Block Behavior (customize)

@@ -4,16 +4,25 @@
 
 ❤️ Express the potential of CraftEngine with me.
 
-Wiki: PLAN
+Wiki: plan
 ## Mention
 
 This extension do not support Folia currently. \
 It require dealing those scheduling stuff, which I believe isn't that hard but I don't find time to do so.
 
 ## Feature
+Unstable - minor issues exist and still need to be fixed. \
+Refactor - fully functional but will be refactor later. \
+Customize - nearly unusable for other people, and will be redesign for generalize usecase. \
+Plan - it is a plan feature. \
 - Multi-Hit Furniture Breaking
-- CountDown Block Behavior
-- Block Like Furniture Breaking (plan)
+- Fan Block Behavior (refactor)
+- DateCountDown Block Behavior (customize)
+- Cake & Email Block Behavior (customize)
+- Fence Block Behavior (unstable)
+- Customize Block Breaking Animation (plan)
+- Customize Furniture Breaking Animation (plan)
+- TickCountDown Block Behavior (plan)
 
 ## Other
 If you want any feature, feel free to discuss with me on Discord.

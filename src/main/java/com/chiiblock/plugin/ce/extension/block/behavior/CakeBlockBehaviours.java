@@ -109,19 +109,19 @@ public class CakeBlockBehaviours extends BukkitBlockBehavior {
     }
 
     private void sendMail(String to, String subject, String html) {
-        HttpURLConnection conn = null;
+        HttpURLConnection connection = null;
         try {
             String sep = webhookUrl.contains("?") ? "&" : "?";
             String urlWithKey = webhookUrl + sep + "key=" +
                     URLEncoder.encode(key, StandardCharsets.UTF_8);
 
             URL url = new URL(urlWithKey);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(15000);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-            conn.setDoOutput(true);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(15000);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            connection.setDoOutput(true);
 
             JsonObject payload = new JsonObject();
             payload.addProperty("to", to);
@@ -131,15 +131,17 @@ public class CakeBlockBehaviours extends BukkitBlockBehavior {
             payload.addProperty("html", html);
 
             byte[] bytes = new Gson().toJson(payload).getBytes(StandardCharsets.UTF_8);
-            try (OutputStream os = conn.getOutputStream()) {
+            try (OutputStream os = connection.getOutputStream()) {
                 os.write(bytes);
             }
 
-            int code = conn.getResponseCode();
-            InputStream is = (code >= 200 && code < 400) ? conn.getInputStream() : conn.getErrorStream();
+            int code = connection.getResponseCode();
+            InputStream is = (code >= 200 && code < 400) ? connection.getInputStream() : connection.getErrorStream();
             String resp = readAll(is);
             JsonObject obj = null;
-            try { obj = new Gson().fromJson(resp, JsonObject.class); } catch (Exception ignore) {}
+            try {
+                obj = new Gson().fromJson(resp, JsonObject.class);
+            } catch (Exception ignore) {}
 
             boolean ok = obj != null && obj.has("ok") && obj.get("ok").getAsBoolean();
             if (!ok) {
@@ -149,7 +151,7 @@ public class CakeBlockBehaviours extends BukkitBlockBehavior {
             System.err.println("[CakeBlockBehaviours] Webhook request failed.");
             e.printStackTrace();
         } finally {
-            if (conn != null) conn.disconnect();
+            if (connection != null) connection.disconnect();
         }
     }
 

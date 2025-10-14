@@ -20,46 +20,6 @@ public class HitTracker implements Listener {
         this.module = module;
     }
 
-
-    /*@EventHandler
-    public void onVanillaBlockInteract(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        Block block = event.getClickedBlock();
-        if (block == null) return;
-        if (CraftEngineBlocks.isCustomBlock(block)) return;
-        BlockData blockData = block.getBlockData();
-        if (!(blockData instanceof Door door)) return;
-        CustomBlock customBlock = CraftEngineBlocks.byId(Key.of("default", "palm_door"));
-        if (customBlock == null) return;
-        event.setCancelled(true);
-
-        Block otherHalf = door.getHalf() == Bisected.Half.BOTTOM
-                ? block.getRelative(BlockFace.UP)
-                : block.getRelative(BlockFace.DOWN);
-        if (!(otherHalf.getBlockData() instanceof Door relativeDoor)) return;
-
-        block.setType(Material.AIR, false);
-        otherHalf.setType(Material.AIR, false);
-        replaceDoorHalf(block, door, customBlock);
-        replaceDoorHalf(otherHalf, relativeDoor, customBlock);
-    }
-
-    private void replaceDoorHalf(Block block, Door doorData, CustomBlock customBlock) {
-        CompoundTag properties = createDoorProperties(doorData);
-        ImmutableBlockState newState = customBlock.getBlockState(properties);
-        CraftEngineBlocks.place(block.getLocation(), newState, UpdateOption.UPDATE_NONE, false);
-    }
-
-    private CompoundTag createDoorProperties(Door door) {
-        CompoundTag properties = new CompoundTag();
-        properties.putString("facing", door.getFacing().name().toLowerCase());
-        properties.putString("half", door.getHalf() == Bisected.Half.BOTTOM ? "lower" : "upper" );
-        properties.putString("hinge", door.getHinge().name().toLowerCase());
-        properties.putBoolean("open", door.isOpen());
-        properties.putBoolean("powered", door.isPowered());
-        return properties;
-    }*/
-
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onFurnitureAttemptToBreak(FurnitureAttemptBreakEvent event) {
         Player player = event.getPlayer();

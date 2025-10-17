@@ -38,15 +38,6 @@ public class FanBlockEntity extends BlockEntity {
         this.behavior = super.blockState.behavior().getAs(FanBlockBehavior.class).orElseThrow();
     }
 
-    @Override
-    public void loadCustomData(CompoundTag tag) {}
-
-    @Override
-    protected void saveCustomData(CompoundTag tag) {}
-
-    @Override
-    public void preRemove() {}
-
     public static void tick(CEWorld ceWorld, BlockPos pos, ImmutableBlockState state, FanBlockEntity be) {
         int delay = Math.max(1, be.behavior.tickDelay);
         if ((be.localTick++ % delay) != 0) return;

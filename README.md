@@ -13,17 +13,21 @@ It require dealing those scheduling stuff, which I believe isn't that hard but I
 ## Feature
 Unstable - minor issues exist and still need to be fixed. \
 Refactor - fully functional but will be refactor later. \
-Customize - nearly unusable for other people, and will be redesign for generalize usecase. \
-Plan - it is a plan feature. 
+Customize - nearly unusable for other people, and will be redesign for generalize use case.
 - Multi-Hit Furniture Breaking
 - Fan Block Behavior (refactor)
 - DateCountDown Block Behavior (customize)
 - Cake & Email Block Behavior (customize)
-- Fence Block Behavior (unstable)
-- Customize Block Breaking Animation (plan)
-- Customize Furniture Breaking Animation (plan)
-- TickCountDown Block Behavior (plan)
-- MythicMobs Integration (plan)
+- Safe Fence Block Behavior (unstable)
+
+## Pathway
+- Fan Block Behavior
+- Wiki
+- Hologram Block Behavior
+- DateCountDown Block Entity Behavior
+- TickCountDown Block Entity Behavior
+- Folia Support
+- Block & Furniture Breaking Animation?
 
 ## Other
 If you want any feature, feel free to discuss with me on Discord.

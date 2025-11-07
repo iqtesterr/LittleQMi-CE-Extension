@@ -34,6 +34,7 @@ import java.util.*;
 @SuppressWarnings("UnstableApiUsage")
 public class HoloBlockEntity extends BlockEntity implements DynamicBlockEntityRenderer {
     private static final int VERSION = 1;
+    boolean requireUpdate = false;
     private final HoloBlockBehavior behavior;
     private boolean display;
 
@@ -64,7 +65,7 @@ public class HoloBlockEntity extends BlockEntity implements DynamicBlockEntityRe
     @Override
     public void loadCustomData(CompoundTag tag) {
         boolean display = tag.getBoolean("display");
-        String text = Optional.of(tag.getString("text")).orElse(textConfig.text());
+        String text = Optional.ofNullable(tag.getString("text")).orElse(textConfig.text());
         float translationX = tag.getFloat("translation_x");
         float translationY = tag.getFloat("translation_y");
         float translationZ = tag.getFloat("translation_z");
@@ -88,12 +89,7 @@ public class HoloBlockEntity extends BlockEntity implements DynamicBlockEntityRe
         this.textConfig.build();
         int version = tag.getInt("version");
 
-        if (version != VERSION) {
-            CEChunk chunk = super.world.getChunkAtIfLoaded(pos.x() >> 4, pos.z() >> 4);
-            if (chunk != null) {
-                chunk.setDirty(true);
-            }
-        }
+        if (version != VERSION) this.requireUpdate = true;
     }
 
     @Override

@@ -74,13 +74,19 @@ public class HoloBlockEntity extends BlockEntity implements DynamicBlockEntityRe
         float rotationY = tag.getFloat("rotation_y");
         float rotationZ = tag.getFloat("rotation_z");
         float rotationW = tag.getFloat("rotation_w");
-        Billboard billboard = Billboard.valueOf(tag.getString("billboard"));
-
+        byte billboardId = tag.getByte("billboard");
+        Billboard billboard = Billboard.CENTER;
+        for (Billboard b : Billboard.values()) {
+            if (b.id() == billboardId) {
+                billboard = b;
+            }
+        }
         this.display = display;
         this.textConfig.setText(text);
         this.textConfig.setTranslation(translationX, translationY, translationZ);
         this.textConfig.setRotation(rotationX, rotationY, rotationZ, rotationW);
         this.textConfig.setBillboard(billboard);
+        this.textConfig.build();
     }
 
     @Override
@@ -94,10 +100,11 @@ public class HoloBlockEntity extends BlockEntity implements DynamicBlockEntityRe
         tag.putFloat("rotation_x", textConfig.rotation().x());
         tag.putFloat("rotation_y", textConfig.rotation().y());
         tag.putFloat("rotation_z", textConfig.rotation().z());
-        tag.putFloat("rotation.w", textConfig.rotation().w());
-        tag.putString("billboard", textConfig.billboard().name());
+        tag.putFloat("rotation_w", textConfig.rotation().w());
+        tag.putByte("billboard", textConfig.billboard().id());
     }
 
+    // Todo 换成 l10n
     public void onDialogOpen(Player player) {
         org.bukkit.entity.Player bukkitPlayer = (org.bukkit.entity.Player) player.platformPlayer();
         MiniMessage mini = MiniMessage.miniMessage();

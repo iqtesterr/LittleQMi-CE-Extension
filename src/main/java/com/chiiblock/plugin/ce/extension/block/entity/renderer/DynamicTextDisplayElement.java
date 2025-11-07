@@ -164,15 +164,15 @@ public class DynamicTextDisplayElement implements DynamicBlockEntityRenderer {
             List<Object> dataValues = new ArrayList<>();
             if (dirty.contains(Field.SCALE)) {
                 TextDisplayEntityData.Scale.addEntityData(this.scale, dataValues);
-                staticValues.add(dataValues.getFirst());
+                staticValues.add(dataValues.getLast());
             }
             if (dirty.contains(Field.ROTATION)) {
                 TextDisplayEntityData.RotationLeft.addEntityData(this.rotation, dataValues);
-                staticValues.add(dataValues.get(1));
+                staticValues.add(dataValues.getLast());
             }
             if (dirty.contains(Field.BILLBOARD)) {
                 TextDisplayEntityData.BillboardConstraints.addEntityData(this.billboard.id(), dataValues);
-                staticValues.add(dataValues.get(2));
+                staticValues.add(dataValues.getLast());
             }
             if (dirty.contains(Field.TRANSLATION)) {
                 TextDisplayEntityData.Translation.addEntityData(this.translation, dataValues);

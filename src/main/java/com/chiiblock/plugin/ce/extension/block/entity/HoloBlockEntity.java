@@ -29,13 +29,11 @@ import net.momirealms.craftengine.libraries.nbt.CompoundTag;
 import org.bukkit.inventory.ItemStack;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("UnstableApiUsage")
 public class HoloBlockEntity extends BlockEntity implements DynamicBlockEntityRenderer {
+    private static final int VERSION = 1;
     private final HoloBlockBehavior behavior;
     private boolean display;
 
@@ -66,7 +64,7 @@ public class HoloBlockEntity extends BlockEntity implements DynamicBlockEntityRe
     @Override
     public void loadCustomData(CompoundTag tag) {
         boolean display = tag.getBoolean("display");
-        String text = tag.getString("text");
+        String text = Optional.of(tag.getString("text")).orElse(textConfig.text());
         float translationX = tag.getFloat("translation_x");
         float translationY = tag.getFloat("translation_y");
         float translationZ = tag.getFloat("translation_z");
@@ -82,15 +80,25 @@ public class HoloBlockEntity extends BlockEntity implements DynamicBlockEntityRe
             }
         }
         this.display = display;
+        this.textDisplay.setDisplay(display);
         this.textConfig.setText(text);
         this.textConfig.setTranslation(translationX, translationY, translationZ);
         this.textConfig.setRotation(rotationX, rotationY, rotationZ, rotationW);
         this.textConfig.setBillboard(billboard);
         this.textConfig.build();
+        int version = tag.getInt("version");
+
+        if (version != VERSION) {
+            CEChunk chunk = super.world.getChunkAtIfLoaded(pos.x() >> 4, pos.z() >> 4);
+            if (chunk != null) {
+                chunk.setDirty(true);
+            }
+        }
     }
 
     @Override
     protected void saveCustomData(CompoundTag tag) {
+        tag.putInt("version", VERSION);
         tag.putBoolean("display", textDisplay.display());
         tag.putString("text", textConfig.text());
         tag.putFloat("scale", textConfig.scale().x());
@@ -276,6 +284,7 @@ public class HoloBlockEntity extends BlockEntity implements DynamicBlockEntityRe
         if (prev != textDisplay.display()) {
             updateDisplayBlockState(textDisplay.display());
         }
+        chunk.setDirty(true);
     }
 
     public void switchItem(ItemStack item) {

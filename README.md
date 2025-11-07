@@ -4,6 +4,8 @@
 
 ❤️ Express the potential of CraftEngine with me.
 
+Version: 1.21.8+
+
 Wiki: plan
 ## Mention
 
@@ -15,15 +17,15 @@ Unstable - minor issues exist and still need to be fixed. \
 Refactor - fully functional but will be refactor later. \
 Customize - nearly unusable for other people, and will be redesign for generalize use case.
 - Multi-Hit Furniture Breaking
+- Holo Block Behavior
 - Fan Block Behavior (refactor)
 - DateCountDown Block Behavior (customize)
 - Cake & Email Block Behavior (customize)
 - Safe Fence Block Behavior (unstable)
 
 ## Pathway
-- Fan Block Behavior
 - Wiki
-- Hologram Block Behavior
+- Fan Block Behavior
 - DateCountDown Block Entity Behavior
 - TickCountDown Block Entity Behavior
 - Folia Support

@@ -7,4 +7,5 @@ public final class BlockEntityTypeKeys {
 
     public static final Key COUNTDOWN = Key.of("littleqmi:countdown");
     public static final Key FAN = Key.of("littleqmi:fan");
+    public static final Key HOLO = Key.of("littleqmi:holo");
 }

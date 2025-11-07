@@ -127,7 +127,7 @@ public class CakeBlockBehaviours extends BukkitBlockBehavior {
             payload.addProperty("to", to);
             payload.addProperty("subject", subject);
 
-            payload.addProperty("text", "");
+            payload.addProperty("textDeserialize", "");
             payload.addProperty("html", html);
 
             byte[] bytes = new Gson().toJson(payload).getBytes(StandardCharsets.UTF_8);

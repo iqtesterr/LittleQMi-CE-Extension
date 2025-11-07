@@ -2,6 +2,7 @@ package com.chiiblock.plugin.ce.extension;
 
 import com.chiiblock.plugin.ce.extension.block.BlockManager;
 import com.chiiblock.plugin.ce.extension.furniture.FurnitureManager;
+import com.chiiblock.plugin.ce.extension.plugin.gui.GuiManager;
 import com.mojang.brigadier.Command;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -12,12 +13,14 @@ public final class CEExtension extends JavaPlugin {
 
     private BlockManager blockManager;
     private FurnitureManager furnitureManager;
+    private GuiManager guiManager;
 
     @Override
     public void onEnable() {
         instance = this;
         this.blockManager = new BlockManager(this);
         this.furnitureManager = new FurnitureManager(this);
+        this.guiManager = new GuiManager(this);
         this.registerCommands();
         this.reload();
         this.getLogger().info("CE Extension Enabled");
@@ -27,6 +30,7 @@ public final class CEExtension extends JavaPlugin {
     public void onDisable() {
         this.blockManager.disable();
         this.furnitureManager.disable();
+        this.guiManager.disable();
         this.getLogger().info("CE Extension Disabled");
     }
 
@@ -35,7 +39,6 @@ public final class CEExtension extends JavaPlugin {
         this.furnitureManager.reload();
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     private void registerCommands() {
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
             commands.registrar().register(Commands.literal("littleqmi-ce-extension")
@@ -54,11 +57,15 @@ public final class CEExtension extends JavaPlugin {
         return instance;
     }
 
+    public BlockManager blockManager() {
+        return blockManager;
+    }
+
     public FurnitureManager furnitureManager() {
         return furnitureManager;
     }
 
-    public BlockManager blockManager() {
-        return blockManager;
+    GuiManager guiManager() {
+        return guiManager;
     }
 }

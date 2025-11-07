@@ -13,6 +13,7 @@ import net.momirealms.craftengine.core.block.entity.BlockEntityType;
 import net.momirealms.craftengine.core.block.entity.tick.BlockEntityTicker;
 import net.momirealms.craftengine.core.world.BlockPos;
 import net.momirealms.craftengine.core.world.CEWorld;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -34,8 +35,9 @@ public class DateCountdownBlockBehavior extends BukkitBlockBehavior implements E
         this.targetEpochSecond = targetEpochSecond;
     }
 
+    @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityType<T> blockEntityType() {
+    public <T extends BlockEntity> BlockEntityType<T> blockEntityType(ImmutableBlockState immutableBlockState) {
         return EntityBlockBehavior.blockEntityTypeHelper(BlockEntityTypes.COUNTDOWN);
     }
 
